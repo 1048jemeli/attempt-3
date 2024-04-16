@@ -1,4 +1,4 @@
-let url = 'http://localhost:3000/films';
+let url = 'http://localhost:3002/films';
 const listHolder = document.getElementById('films');
 const elementToStyle = document.getElementById('films');
 elementToStyle.style.color = 'green';
@@ -17,6 +17,17 @@ function handleLoad() {
 function handleBeforeUnload() {
   return 'Are you sure you want to leave this page?';
 }
+
+document.getElementById('reviewForm').addEventListener('submit', function(event) {
+    let reviewText = document.getElementById('reviewText').value.trim();
+    let rating = document.getElementById('ratingInput').value;
+
+    if (reviewText === '' || rating === '') {
+        event.preventDefault();
+        alert('Please enter both a review and a rating.');
+        return false;
+    }
+});
 // Create fetch function
 function fetchMovies(url) {
     fetch(url)
@@ -78,4 +89,20 @@ btn.addEventListener('click', function (e) {
     } else if (remTickets === 0) {
         btn.textContent = 'Sold Out';
     }
-});
+}); 
+const button = document.getElementById('delete');
+function deleteMovie(movieItem) {
+    fetch(url)
+    .then(response => {
+        if (response.ok) {
+            const movieItem = document.querySelector('films');
+            if (movieItem) {
+                movieItem.remove();
+            }
+        } else {
+            console.error('Failed to delete movie:', response.status);
+        }
+    })
+    .catch(error => console.error('Error deleting movie:', error));
+}
+
